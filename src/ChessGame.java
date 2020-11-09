@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ChessGame
 {
     public Board board = new Board(8, 8);
+    private static Scanner s = new Scanner(System.in);
     private ArrayList<Piece> captured = new ArrayList<>();
-    private Piece promotionPiece;
     private int turns = 0;
 
     public int getTurns()
@@ -19,34 +20,72 @@ public class ChessGame
         {
 //            if (moveFrom.getPiece().isWhite() == (turns % 2 == 0))
 //            {
-                int legalValue = moveFrom.getPiece().isLegalMove(board, moveFrom, moveTo);
+            int legalValue = moveFrom.getPiece().isLegalMove(board, moveFrom, moveTo);
 
-                if (legalValue == 1)
-                {
+            switch (legalValue)
+            {
+                case 1:
                     normalMove(moveFrom, moveTo);
                     turns++;
-                }
-                else if (legalValue == 2)
-                {
+                    break;
+                case 2:
                     enPassant(moveFrom, moveTo);
                     turns++;
-                }
-                else if (legalValue == 3)
-                {
-                    normalMove(moveFrom, moveTo);
+                    break;
+                case 3:
+                    promotePawn(moveFrom, moveTo);
                     turns++;
-                }
-                else if (legalValue == 4)
-                {
+                    break;
+                case 4:
                     castleKingSide(moveFrom, moveTo);
                     turns++;
-                }
-                else if (legalValue == 5)
-                {
+                    break;
+                case 5:
                     castleQueenSide(moveFrom, moveTo);
                     turns++;
-                }
+                    break;
+                default:
+                    break;
+            }
 //            }
+        }
+        increasePawnsMovementCounterByOneIfOnTheSpecificRowBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIDumbNoItIsTheOtherPeopleIAlsoWantToGetSomeIdeasIWishIKnewMoreOrHadRealWorldExperiencePeriodGodIWishIKnewWhatIWasDoingAtLeastItSortOfWorks(board, moveTo);
+    }
+
+    // only checks the 4th and 5th row assuming this is an 8 x 8 board
+    private void increasePawnsMovementCounterByOneIfOnTheSpecificRowBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIDumbNoItIsTheOtherPeopleIAlsoWantToGetSomeIdeasIWishIKnewMoreOrHadRealWorldExperiencePeriodGodIWishIKnewWhatIWasDoingAtLeastItSortOfWorks(Board board, Tile moveTo)
+    {
+        for (int i = 0; i < board.getBoardSizeX(); i++)
+        {
+            if (board.getTile(i, board.getBoardSizeY() - 4).getPiece() != null)
+            {
+                if (board.getTile(i, board.getBoardSizeY() - 4).getPiece().getId() == 'P')
+                {
+                    if (board.getTile(i, board.getBoardSizeY() - 4) != moveTo)
+                    {
+                        if (board.getTile(i, board.getBoardSizeY() - 4).getPiece().getMoves() == 1)
+                        {
+                            board.getTile(i, board.getBoardSizeY() - 4).getPiece().increaseMoves();
+                            board.getTile(i, board.getBoardSizeY() - 4).getPiece().movesMinusOne = true;
+                        }
+                    }
+                }
+            }
+
+            if (board.getTile(i, 3).getPiece() != null)
+            {
+                if (board.getTile(i, 3).getPiece().getId() == 'P')
+                {
+                    if (board.getTile(i, 3) != moveTo)
+                    {
+                        if (board.getTile(i, 3).getPiece().getMoves() == 1)
+                        {
+                            board.getTile(i, 3).getPiece().increaseMoves();
+                            board.getTile(i, 3).getPiece().movesMinusOne = true;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -70,9 +109,45 @@ public class ChessGame
         normalMove(moveFrom, moveTo);
     }
 
-    private void pawnPromotion(Tile moveFrom, Tile moveTo)
+    private void promotePawn(Tile moveFrom, Tile moveTo)
     {
+        boolean needInput = true;
+        while(needInput)
+        {
+            char pieceSelected = s.nextLine().charAt(0);
+            normalMove(moveFrom, moveTo);
 
+            Piece pawn = moveTo.getPiece();
+            switch (pieceSelected)
+            {
+                case 'Q':
+                    moveTo.setPiece(new Queen(pawn.isWhite(), 50));
+                    moveTo.getPiece().setMoves(pawn.getMoves());
+                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needInput = false;
+                    break;
+                case 'R':
+                    moveTo.setPiece(new Rook(pawn.isWhite(), 50));
+                    moveTo.getPiece().setMoves(pawn.getMoves());
+                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needInput = false;
+                    break;
+                case 'B':
+                    moveTo.setPiece(new Bishop(pawn.isWhite(), 50));
+                    moveTo.getPiece().setMoves(pawn.getMoves());
+                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needInput = false;
+                    break;
+                case 'H':
+                    moveTo.setPiece(new Horse(pawn.isWhite(), 50));
+                    moveTo.getPiece().setMoves(pawn.getMoves());
+                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needInput = false;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     private void enPassant(Tile moveFrom, Tile moveTo)
@@ -89,6 +164,7 @@ public class ChessGame
         }
         normalMove(moveFrom, moveTo);
 
+        moveTo.getPiece().movesMinusOne = true;
         moveTo.getPiece().increaseMoves();
     }
 
