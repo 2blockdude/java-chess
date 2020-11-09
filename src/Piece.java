@@ -2,7 +2,7 @@ public abstract class Piece
 {
     private boolean captured;
     private boolean white;
-    private boolean movesMinusOne = false;
+    protected boolean movesMinusOne = false;
     private int movesTaken = 0;
     private int value;
 
@@ -34,21 +34,17 @@ public abstract class Piece
 
     public int getMoves()
     {
-        if (movesMinusOne)
-            return movesTaken - 1;
-        else
-            return movesTaken;
+        return movesTaken;
+    }
+
+    public void setMoves(int moves)
+    {
+        this.movesTaken = moves;
     }
 
     public void increaseMoves()
     {
         movesTaken++;
-    }
-
-    // stupid thing I added as a work around for "en passant"
-    public void shouldReturnMovesMinusOne()
-    {
-        movesMinusOne = !movesMinusOne;
     }
 
     // isLegalMove notes
