@@ -32,7 +32,6 @@ public class Rook extends Piece
         if (isPieceBlockingV2(board, moveFrom, moveTo))
             return 0;
 
-
         return 1;
 
     }

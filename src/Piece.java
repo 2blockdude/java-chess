@@ -2,6 +2,7 @@ public abstract class Piece
 {
     private boolean captured;
     private boolean white;
+    private boolean movesMinusOne = false;
     private int movesTaken = 0;
     private int value;
 
@@ -33,7 +34,10 @@ public abstract class Piece
 
     public int getMoves()
     {
-        return movesTaken;
+        if (movesMinusOne)
+            return movesTaken - 1;
+        else
+            return movesTaken;
     }
 
     public void increaseMoves()
@@ -41,12 +45,19 @@ public abstract class Piece
         movesTaken++;
     }
 
+    // stupid thing I added as a work around for "en passant"
+    public void shouldReturnMovesMinusOne()
+    {
+        movesMinusOne = !movesMinusOne;
+    }
+
     // isLegalMove notes
     // 0: illegal move
     // 1: legal move
-    // 2: ompason
+    // 2: en passant
     // 3: promotion
-    // 4: castle
+    // 4: castle king side
+    // 5: castle queen side
     public abstract int isLegalMove(Board board, Tile moveFrom, Tile moveTo);
     public abstract char getId();
 
