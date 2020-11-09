@@ -1,8 +1,10 @@
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class Game
 {
-    private final static Scanner s = new Scanner(System.in);
+    private static Scanner s = new Scanner(System.in);
 
     public static void main(String[] args)
     {
@@ -12,6 +14,8 @@ public class Game
 
     private static void printBoard(Board board)
     {
+        ChessGame c = new ChessGame();
+        c.board = board;
         while(true)
         {
             System.out.print("   ");
@@ -32,11 +36,11 @@ public class Game
                     {
                         if (board.getTile(x, y).getPiece() != null)
                         {
-                            System.out.printf("|%c%c ", board.getTile(x, y).getPiece().isWhite() ? 'W' : 'B', board.getTile(x, y).getPiece().getId());
+                            System.out.printf(" %c%c ", board.getTile(x, y).getPiece().isWhite() ? 'W' : 'B', board.getTile(x, y).getPiece().getId());
                         }
                         else
                         {
-                            System.out.printf("|XX ");
+                            System.out.printf(" XX ");
                         }
                     }
                 }
@@ -45,8 +49,12 @@ public class Game
 
             while(true)
             {
+
+
                 System.out.print("Select Piece: ");
                 String pieceFrom = s.nextLine();
+//                InputStream fakeIn = new ByteArrayInputStream(pieceFrom.getBytes());
+//                System.setIn(fakeIn);
                 int x = pieceFrom.charAt(0) - 97;
                 int y = Integer.parseInt(String.valueOf(pieceFrom.charAt(1))) - 1;
 
@@ -56,7 +64,7 @@ public class Game
                 int j = Integer.parseInt(String.valueOf(pieceTo.charAt(1))) - 1;
 
 
-                //board.movePiece(board.getTile(x, y), board.getTile(i, j));
+                c.movePiece(board.getTile(x, y), board.getTile(i, j));
                 break;
             }
         }
