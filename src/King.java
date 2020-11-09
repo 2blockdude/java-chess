@@ -7,11 +7,13 @@ public class King extends Piece
         super(white, value);
     }
 
+    @Override
     public char getId()
     {
         return 'K';
     }
 
+    @Override
     public int isLegalMove(Board board, Tile moveFrom, Tile moveTo)
     {
         int numSpacesMovingX = (moveTo.getX() - moveFrom.getX());
