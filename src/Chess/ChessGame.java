@@ -16,6 +16,11 @@ public class ChessGame
         return turns;
     }
 
+    public boolean isTurnWhite()
+    {
+        return turns % 2 == 0;
+    }
+
     public int getBoardSizeX()
     {
         return board.getBoardSizeX();
@@ -207,25 +212,25 @@ public class ChessGame
             switch (pieceSelected)
             {
                 case 'Q':
-                    moveTo.setPiece(new Queen(pawn.isWhite(), 50));
+                    moveTo.setPiece(new Queen(pawn.isWhite()));
                     moveTo.getPiece().setMoves(pawn.getMoves());
                     moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
                     needInput = false;
                     break;
                 case 'R':
-                    moveTo.setPiece(new Rook(pawn.isWhite(), 50));
+                    moveTo.setPiece(new Rook(pawn.isWhite()));
                     moveTo.getPiece().setMoves(pawn.getMoves());
                     moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
                     needInput = false;
                     break;
                 case 'B':
-                    moveTo.setPiece(new Bishop(pawn.isWhite(), 50));
+                    moveTo.setPiece(new Bishop(pawn.isWhite()));
                     moveTo.getPiece().setMoves(pawn.getMoves());
                     moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
                     needInput = false;
                     break;
                 case 'H':
-                    moveTo.setPiece(new Horse(pawn.isWhite(), 50));
+                    moveTo.setPiece(new Horse(pawn.isWhite()));
                     moveTo.getPiece().setMoves(pawn.getMoves());
                     moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
                     needInput = false;
