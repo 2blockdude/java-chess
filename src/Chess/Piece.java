@@ -69,7 +69,7 @@ public abstract class Piece
         Piece originalPiece = board.getTile(moveFrom.getX(), moveFrom.getY()).getPiece();
         Piece placeHolder;
 
-        // is not in check if it is about to capture a king
+        // if it is about to capture a king then just return that it will not be in check
         if (moveTo.getPiece() != null)
         {
             if (moveTo.getPiece().getId() == 'K')
