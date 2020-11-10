@@ -43,6 +43,8 @@ public class Game extends JPanel
                     chess.promoteLastMovedPiece('Q');
                 System.out.println(chess.isKingInCheck());
                 System.out.println(chess.isKingInCheckmate());
+
+                // refresh board on click
                 repaint();
             }
         });
@@ -85,6 +87,7 @@ public class Game extends JPanel
         {
             for (int y = 0; y < chess.getBoardSizeY(); y++)
             {
+
                 boolean isTan = (x % 2 == 0) ? y % 2 == 0 : y % 2 == 1;
                 if (isTan)
                 {
@@ -98,6 +101,7 @@ public class Game extends JPanel
                     g.fillRect(x * 100, y * 100, 100, 100);
                     g.setColor(Color.black);
                 }
+                g.drawRect(x * 100, y * 100, 100, 100);
             }
         }
 
@@ -105,7 +109,7 @@ public class Game extends JPanel
         {
             for (int y = 0; y < chess.getBoardSizeY(); y++)
             {
-                g.drawRect(x * 100, y * 100, 100, 100);
+
 
                 if (chess.getTile(x, y).getPiece() != null)
                 {
