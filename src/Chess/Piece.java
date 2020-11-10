@@ -40,7 +40,6 @@ public abstract class Piece
     // 3: promotion
     // 4: castle king side
     // 5: castle queen side
-    public abstract int isMoveLegal(Board board, Tile moveFrom, Tile moveTo, boolean checkKing);
     public abstract int isMoveLegal(Board board, Tile moveFrom, Tile moveTo);
     public abstract char getId();
     public abstract int getValue();
@@ -58,8 +57,28 @@ public abstract class Piece
                                 for (int y = 0; y < board.getBoardSizeY(); y++)
                                     if (board.getTile(x, y).getPiece() != null)
                                         if (board.getTile(x, y).getPiece().isWhite() != isWhite())
-                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j), false) > 0)
+                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j)) > 0)
                                                 return true;
+        return false;
+    }
+
+    protected boolean isDestinationCheck(Board board, Tile moveFrom, Tile moveTo)
+    {
+        // moves king to destination to see if any enemy piece can move to the destination
+        Piece enemyPiece = board.getTile(moveTo.getX(), moveTo.getY()).getPiece();
+        Piece originalPiece = board.getTile(moveFrom.getX(), moveFrom.getY()).getPiece();
+        board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
+        board.getTile(moveTo.getX(), moveTo.getY()).setPiece(originalPiece);
+
+        if (isKingInCheck(board))
+        {
+            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(originalPiece);
+            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(enemyPiece);
+            return true;
+        }
+
+        board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(originalPiece);
+        board.getTile(moveTo.getX(), moveTo.getY()).setPiece(enemyPiece);
         return false;
     }
 
@@ -113,26 +132,6 @@ public abstract class Piece
             }
         }
 
-        return false;
-    }
-
-    protected boolean isDestinationCheck(Board board, Tile moveFrom, Tile moveTo)
-    {
-        // moves king to destination to see if any enemy piece can move to the destination
-        Piece enemyPiece = board.getTile(moveTo.getX(), moveTo.getY()).getPiece();
-        Piece originalPiece = board.getTile(moveFrom.getX(), moveFrom.getY()).getPiece();
-        board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
-        board.getTile(moveTo.getX(), moveTo.getY()).setPiece(originalPiece);
-
-        if (isKingInCheck(board))
-        {
-            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(originalPiece);
-            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(enemyPiece);
-            return true;
-        }
-
-        board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(originalPiece);
-        board.getTile(moveTo.getX(), moveTo.getY()).setPiece(enemyPiece);
         return false;
     }
 }

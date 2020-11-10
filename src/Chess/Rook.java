@@ -24,12 +24,6 @@ public class Rook extends Piece
     @Override
     public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo)
     {
-        return isMoveLegal(board, moveFrom, moveTo, true);
-    }
-
-    @Override
-    public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo, boolean checkKing)
-    {
         int numSpacesMovingX = (moveTo.getX() - moveFrom.getX());
         int numSpacesMovingY = (moveTo.getY() - moveFrom.getY());
 
@@ -47,11 +41,6 @@ public class Rook extends Piece
             return 0;
 
         // check if king is in check and if move will bring it out of check
-        if (checkKing)
-            if (isKingInCheck(board))
-                if (isDestinationCheck(board, moveFrom, moveTo))
-                    return 0;
-
         if (isDestinationCheck(board, moveFrom, moveTo))
             return 0;
 

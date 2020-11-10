@@ -62,9 +62,10 @@ public class Game extends JPanel
     @Override
     public void paintComponent(Graphics g)
     {
+        // removes old graphics
         super.paintComponent(g);
-        //Graphics g2d = (Graphics2D) g;
 
+        // draws chess game
         drawBoard(g);
         fillValidMoves(g);
     }
