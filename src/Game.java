@@ -65,12 +65,18 @@ public class Game extends JPanel
         // removes old graphics
         super.paintComponent(g);
 
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setStroke(new BasicStroke(3));
+
         // draws chess game
-        drawBoard(g);
-        fillValidMoves(g);
+        drawBoard(g2d);
+        highlightSelectedPiece(g2d);
+        fillValidMoves(g2d);
     }
 
-    private void drawBoard(Graphics g)
+    private void drawBoard(Graphics2D g)
     {
         for (int x = 0; x < chess.getBoardSizeX(); x++)
         {
@@ -97,7 +103,20 @@ public class Game extends JPanel
         }
     }
 
-    private void fillValidMoves(Graphics g)
+    private void highlightSelectedPiece(Graphics2D g)
+    {
+        if (chess.getTile(mouseX, mouseY).getPiece() != null)
+        {
+            if (chess.getTile(mouseX, mouseY).getPiece().isWhite() == chess.isTurnWhite())
+            {
+                g.setColor(Color.yellow);
+                g.drawOval((mouseX * 100) + 25, (mouseY * 100) + 25, 50, 50);
+                g.setColor(Color.black);
+            }
+        }
+    }
+
+    private void fillValidMoves(Graphics2D g)
     {
         if (chess.getTile(mouseX, mouseY).getPiece() != null)
         {
