@@ -63,8 +63,6 @@ public class Game extends JPanel
 
         drawBoard(g);
         fillValidMoves(g);
-
-        g.drawString("S", 50, 50);
     }
 
     private void drawBoard(Graphics g)
