@@ -78,6 +78,29 @@ public class Game extends JPanel
 
     private void drawBoard(Graphics2D g)
     {
+        Color t1 = new Color(209, 187, 151);
+        Color t2 = new Color(156, 127, 81);
+
+        for (int x = 0; x < chess.getBoardSizeX(); x++)
+        {
+            for (int y = 0; y < chess.getBoardSizeY(); y++)
+            {
+                boolean isTan = (x % 2 == 0) ? y % 2 == 0 : y % 2 == 1;
+                if (isTan)
+                {
+                    g.setColor(t1);
+                    g.fillRect(x * 100, y * 100, 100, 100);
+                    g.setColor(Color.black);
+                }
+                else
+                {
+                    g.setColor(t2);
+                    g.fillRect(x * 100, y * 100, 100, 100);
+                    g.setColor(Color.black);
+                }
+            }
+        }
+
         for (int x = 0; x < chess.getBoardSizeX(); x++)
         {
             for (int y = 0; y < chess.getBoardSizeY(); y++)
@@ -88,8 +111,10 @@ public class Game extends JPanel
                 {
                     if (chess.getTile(x, y).getPiece().isWhite())
                     {
-                        g.setColor(Color.gray);
+                        g.setColor(Color.white);
                         g.fillOval((x * 100) + 25, (y * 100) + 25, 50, 50);
+                        g.setColor(Color.black);
+                        g.drawOval((x * 100) + 25, (y * 100) + 25, 50, 50);
                         g.setColor(Color.black);
                         g.drawString(String.valueOf(chess.getTile(x, y).getPiece().getId()), (x * 100) + 5, (y * 100) + 15);
                     }
