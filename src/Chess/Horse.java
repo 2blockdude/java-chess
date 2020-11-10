@@ -5,15 +5,21 @@ import static java.lang.Math.pow;
 
 public class Horse extends Piece
 {
-    public Horse(boolean white, int value)
+    public Horse(boolean white)
     {
-        super(white, value);
+        super(white);
     }
 
     @Override
     public char getId()
     {
         return 'H';
+    }
+
+    @Override
+    public int getValue()
+    {
+        return 3;
     }
 
     @Override

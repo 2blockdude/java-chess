@@ -4,15 +4,21 @@ import static java.lang.Math.abs;
 
 public class King extends Piece
 {
-    public King(boolean white, int value)
+    public King(boolean white)
     {
-        super(white, value);
+        super(white);
     }
 
     @Override
     public char getId()
     {
         return 'K';
+    }
+
+    @Override
+    public int getValue()
+    {
+        return 900;
     }
 
     @Override

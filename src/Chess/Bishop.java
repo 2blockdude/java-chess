@@ -4,15 +4,21 @@ import static java.lang.Math.abs;
 
 public class Bishop extends Piece
 {
-    public Bishop(boolean white, int value)
+    public Bishop(boolean white)
     {
-        super(white, value);
+        super(white);
     }
 
     @Override
     public char getId()
     {
         return 'B';
+    }
+
+    @Override
+    public int getValue()
+    {
+        return 3;
     }
 
     @Override

@@ -4,15 +4,21 @@ import static java.lang.Math.abs;
 
 public class Queen extends Piece
 {
-    public Queen(boolean white, int value)
+    public Queen(boolean white)
     {
-        super(white, value);
+        super(white);
     }
 
     @Override
     public char getId()
     {
         return 'Q';
+    }
+
+    @Override
+    public int getValue()
+    {
+        return 9;
     }
 
     @Override

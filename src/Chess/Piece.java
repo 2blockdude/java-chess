@@ -7,12 +7,10 @@ public abstract class Piece
     private boolean white;
     protected boolean movesMinusOne = false;
     private int movesTaken = 0;
-    private int value;
 
-    public Piece(boolean white, int value)
+    public Piece(boolean white)
     {
         this.white = white;
-        this.value = value;
     }
 
     public boolean isWhite()
@@ -45,6 +43,7 @@ public abstract class Piece
     public abstract int isMoveLegal(Board board, Tile moveFrom, Tile moveTo, boolean checkKing);
     public abstract int isMoveLegal(Board board, Tile moveFrom, Tile moveTo);
     public abstract char getId();
+    public abstract int getValue();
 
     // not sure if I should put this here
     protected boolean isKingInCheck(Board board)

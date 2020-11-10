@@ -4,15 +4,21 @@ import static java.lang.Math.abs;
 
 public class Pawn extends Piece
 {
-    public Pawn(boolean white, int value)
+    public Pawn(boolean white)
     {
-        super(white, value);
+        super(white);
     }
 
     @Override
     public char getId()
     {
         return 'P';
+    }
+
+    @Override
+    public int getValue()
+    {
+        return 1;
     }
 
     @Override

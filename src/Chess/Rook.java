@@ -4,15 +4,21 @@ import static java.lang.Math.abs;
 
 public class Rook extends Piece
 {
-    public Rook(boolean white, int value)
+    public Rook(boolean white)
     {
-        super(white, value);
+        super(white);
     }
 
     @Override
     public char getId()
     {
         return 'R';
+    }
+
+    @Override
+    public int getValue()
+    {
+        return 5;
     }
 
     @Override
