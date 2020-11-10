@@ -122,7 +122,7 @@ public class Game extends JPanel
     public static void main(String[] args)
     {
         JFrame jf = new JFrame();
-        jf.setSize(800, 800);
+        jf.setSize(801, 801);
         jf.setResizable(false);
         jf.setTitle("Chess");
         // sets location on screen when it opens
