@@ -42,7 +42,7 @@ public class Pawn extends Piece
             return 0;
 
         // illegal if not within one space or two in the y axis if not moved
-        if ((abs(numSpacesX) > 1 || abs(numSpacesY) > 2))
+        if (numSpacesX + numSpacesY > 2 || numSpacesX > 1)
         {
             return 0;
         }
@@ -55,7 +55,7 @@ public class Pawn extends Piece
         else
         {
             // check if king is in check and if move will bring it out of check
-            // to be honest I don't know how this does not cause infinite recursion
+            // to be honest I don't know how this does not cause a stack overflow error
             if (isDestinationCheck(board, moveFrom, moveTo))
                 return 0;
 
@@ -83,20 +83,19 @@ public class Pawn extends Piece
 
                 // legal move if the enemy pawn is two spaces from the home row, within bounds, the destination has a piece behind it, the piece is a pawn, and the enemy pawn has moved once
                 if (((moveFrom.getY() == 3) && !isWhite()) || ((moveFrom.getY() == board.getBoardSizeY() - 4) && isWhite()))
+                {
                     if ((moveTo.getY() - 1) >= 0 && (moveTo.getY() - 1) < board.getBoardSizeY())
                         if (board.getTile(moveTo.getX(), moveTo.getY() - 1).getPiece() != null)
                             if (board.getTile(moveTo.getX(), moveTo.getY() - 1).getPiece().getId() == 'P')
                                 if (board.getTile(moveTo.getX(), moveTo.getY() - 1).getPiece().getMoves() == 1)
                                     return 2;
 
-                // legal move if the enemy pawn is two spaces from the home row, within bounds, there is a piece to the right side, the piece is a pawn, and the enemy pawn has moved once
-                if (((moveFrom.getY() == 3) && !isWhite()) || ((moveFrom.getY() == board.getBoardSizeY() - 4) && isWhite()))
                     if ((moveTo.getY() + 1) >= 0 && (moveTo.getY() + 1) < board.getBoardSizeY())
                         if (board.getTile(moveTo.getX(), moveTo.getY() + 1).getPiece() != null)
                             if (board.getTile(moveTo.getX(), moveTo.getY() + 1).getPiece().getId() == 'P')
                                 if (board.getTile(moveTo.getX(), moveTo.getY() + 1).getPiece().getMoves() == 1)
                                     return 2;
-
+                }
             }
             // legal if a piece is directly diagonal to the pawn
             else
