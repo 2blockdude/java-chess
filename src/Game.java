@@ -58,18 +58,11 @@ public class Game
 
                 System.out.print("Select Piece: ");
                 String pieceFrom = s.nextLine();
-                int x = pieceFrom.charAt(0) - 97;
-                int y = Integer.parseInt(String.valueOf(pieceFrom.charAt(1))) - 1;
 
                 System.out.print("Move Piece To: ");
                 String pieceTo = s.nextLine();
-                int i = pieceTo.charAt(0) - 97;
-                int j = Integer.parseInt(String.valueOf(pieceTo.charAt(1))) - 1;
 
-
-
-
-                c.movePiece(board.getTile(x, y), board.getTile(i, j));
+                c.movePiece(pieceFrom, pieceTo);
                 break;
             }
         }

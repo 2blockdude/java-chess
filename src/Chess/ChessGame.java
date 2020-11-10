@@ -16,9 +16,43 @@ public class ChessGame
         return turns;
     }
 
+    public int getBoardSizeX()
+    {
+        return board.getBoardSizeX();
+    }
+
+    public int getBoardSizeY()
+    {
+        return board.getBoardSizeY();
+    }
+
     public void setScanner(Scanner scanner)
     {
         this.s = scanner;
+    }
+
+    private Tile getTileFromCoordinates(String coordinates)
+    {
+        int x = coordinates.charAt(0) - 97;
+        int y = Integer.parseInt(String.valueOf(coordinates.charAt(1))) - 1;
+
+        return board.getTile(x, y);
+    }
+
+    public boolean isMoveLegal(int pieceX, int pieceY, int destinationX, int destinationY)
+    {
+        Tile moveFrom = board.getTile(pieceX, pieceY);
+        Tile moveTo = board.getTile(destinationX, destinationY);
+
+        return isMoveLegal(moveFrom, moveTo);
+    }
+
+    public boolean isMoveLegal(String piece, String destination)
+    {
+        Tile moveFrom = getTileFromCoordinates(piece);
+        Tile moveTo = getTileFromCoordinates(destination);
+
+        return isMoveLegal(moveFrom, moveTo);
     }
 
     public boolean isMoveLegal(Tile moveFrom, Tile moveTo)
@@ -33,7 +67,7 @@ public class ChessGame
     // checks the king based on turn i.e. if it is black's turn it will check the black king and visa versa.
     public boolean isKingInCheck()
     {
-        // loops at tile looking for enemy piece
+        // loops at tile looking for enemy piece and if it has a move that can take the king
         for (int i = 0; i < board.getBoardSizeX(); i++)
             for (int j = 0; j < board.getBoardSizeY(); j++)
                 if (board.getTile(i, j).getPiece() != null)
@@ -50,32 +84,32 @@ public class ChessGame
 
     public boolean isKingInCheckmate()
     {
-        if (isKingInCheck())
-        {
-            for (int x = 0; x < board.getBoardSizeX(); x++)
-            {
-                for (int y = 0; y < board.getBoardSizeY(); y++)
-                {
-                    if (board.getTile(x, y).getPiece() != null)
-                    {
-                        if (board.getTile(x, y).getPiece().isWhite() == (turns % 2 == 0))
-                        {
-                            for (int i = 0; i < board.getBoardSizeX(); i++)
-                            {
-                                for (int j = 0; j < board.getBoardSizeY(); j++)
-                                {
-                                    if (isMoveLegal(board.getTile(x, y), board.getTile(i, j)))
-                                    {
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        // loops through add pieces that are on the same team and sees if there is a valid move. if it finds none then... you know the rest...
+        for (int x = 0; x < board.getBoardSizeX(); x++)
+            for (int y = 0; y < board.getBoardSizeY(); y++)
+                if (board.getTile(x, y).getPiece() != null)
+                    if (board.getTile(x, y).getPiece().isWhite() == (turns % 2 == 0))
+                        for (int i = 0; i < board.getBoardSizeX(); i++)
+                            for (int j = 0; j < board.getBoardSizeY(); j++)
+                                if (isMoveLegal(board.getTile(x, y), board.getTile(i, j)))
+                                    return false;
         return true;
+    }
+
+    public void movePiece(int pieceX, int pieceY, int destinationX, int destinationY)
+    {
+        Tile moveFrom = board.getTile(pieceX, pieceY);
+        Tile moveTo = board.getTile(destinationX, destinationY);
+
+        movePiece(moveFrom, moveTo);
+    }
+
+    public void movePiece(String pieceToMove, String destination)
+    {
+        Tile moveFrom = getTileFromCoordinates(pieceToMove);
+        Tile moveTo = getTileFromCoordinates(destination);
+
+        movePiece(moveFrom, moveTo);
     }
 
     public void movePiece(Tile moveFrom, Tile moveTo)
@@ -83,8 +117,8 @@ public class ChessGame
         // don't forget at the end of moving increase all pawns, who have moved once and is on the en passant row, moves by one
         if (moveFrom.getPiece() != null)
         {
-//            if (moveFrom.getPiece().isWhite() == (turns % 2 == 0))
-//            {
+            if (moveFrom.getPiece().isWhite() == (turns % 2 == 0))
+            {
                 int legalValue = moveFrom.getPiece().isMoveLegal(board, moveFrom, moveTo);
 
                 increasePawnsMovementCounterByOneBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIAlsoWantToGetSomeIdeasIWishIHadMoreExperience(board, moveTo);
@@ -114,7 +148,7 @@ public class ChessGame
                     default:
                         break;
                 }
-//            }
+            }
         }
     }
 
@@ -165,7 +199,8 @@ public class ChessGame
             System.out.println("Promote Pawn");
             System.out.println("Q:Queen, R:Rook, B:Bishop, H:Horse.");
             System.out.print("Piece: ");
-            char pieceSelected = s.nextLine().charAt(0);
+//            char pieceSelected = s.nextLine().charAt(0);
+            char pieceSelected = 'Q';
             move(moveFrom, moveTo);
 
             Piece pawn = moveTo.getPiece();
