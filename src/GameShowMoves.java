@@ -1,4 +1,5 @@
-import java.util.Scanner;
+import Chess.Board;
+import Chess.Tile;
 
 public class GameShowMoves
 {

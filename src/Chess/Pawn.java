@@ -1,3 +1,5 @@
+package Chess;
+
 import static java.lang.Math.abs;
 
 public class Pawn extends Piece
@@ -32,12 +34,17 @@ public class Pawn extends Piece
             return 0;
 
         // can't move is piece if blocking
-        if (isPieceBlocking(board, moveFrom, numSpacesX, numSpacesY))
+        if (isPieceBlocking(board, moveFrom, moveTo))
         {
             return 0;
         }
         else
         {
+            // check if king is in check and if move will bring it out of check
+            if (isKingInCheck(board))
+                if (isDestinationCheck(board, moveFrom, moveTo))
+                    return 0;
+
             // legal if nothing in the space
             if (moveTo.getPiece() == null)
             {
@@ -76,6 +83,7 @@ public class Pawn extends Piece
             {
                 if (numSpacesX == 1 && numSpacesY == 1)
                 {
+                    // gets promoted if at the end of board
                     if (moveTo.getY() == board.getBoardSizeY() - 1 || moveTo.getY() == 0)
                         return 3;
                     return 1;
@@ -83,20 +91,5 @@ public class Pawn extends Piece
             }
         }
         return 0;
-    }
-
-    private boolean isPieceBlocking(Board board, Tile moveFrom, int numSpacesX, int numSpacesY)
-    {
-        if (isWhite())
-            for (int i = 1; i <= numSpacesY; i++)
-                if (board.getTile(moveFrom.getX(), moveFrom.getY() + i).getPiece() != null && numSpacesX == 0)
-                    return true;
-
-        if (!isWhite())
-            for (int i = 1; i <= numSpacesY; i++)
-                if (board.getTile(moveFrom.getX(), moveFrom.getY() - i).getPiece() != null && numSpacesX == 0)
-                    return true;
-
-        return false;
     }
 }

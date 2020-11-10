@@ -1,5 +1,8 @@
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import Chess.Board;
+import Chess.ChessGame;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.Scanner;
 
 public class Game
@@ -15,6 +18,7 @@ public class Game
     private static void printBoard(Board board)
     {
         ChessGame c = new ChessGame();
+        c.setScanner(s);
         c.board = board;
         while(true)
         {
@@ -49,12 +53,8 @@ public class Game
 
             while(true)
             {
-
-
                 System.out.print("Select Piece: ");
                 String pieceFrom = s.nextLine();
-//                InputStream fakeIn = new ByteArrayInputStream(pieceFrom.getBytes());
-//                System.setIn(fakeIn);
                 int x = pieceFrom.charAt(0) - 97;
                 int y = Integer.parseInt(String.valueOf(pieceFrom.charAt(1))) - 1;
 

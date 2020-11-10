@@ -1,3 +1,5 @@
+package Chess;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -5,12 +7,23 @@ public class ChessGame
 {
     public Board board = new Board(8, 8);
     private static Scanner s = new Scanner(System.in);
+    private Tile movedPiece;
     private ArrayList<Piece> captured = new ArrayList<>();
     private int turns = 0;
 
     public int getTurns()
     {
         return turns;
+    }
+
+    public void setScanner(Scanner scanner)
+    {
+        this.s = scanner;
+    }
+
+    public void isLegalMove(Tile moveFrom, Tile moveTo)
+    {
+        
     }
 
     public void movePiece(Tile moveFrom, Tile moveTo)
@@ -20,69 +33,52 @@ public class ChessGame
         {
 //            if (moveFrom.getPiece().isWhite() == (turns % 2 == 0))
 //            {
-            int legalValue = moveFrom.getPiece().isLegalMove(board, moveFrom, moveTo);
+                int legalValue = moveFrom.getPiece().isLegalMove(board, moveFrom, moveTo);
 
-            switch (legalValue)
-            {
-                case 1:
-                    normalMove(moveFrom, moveTo);
-                    turns++;
-                    break;
-                case 2:
-                    enPassant(moveFrom, moveTo);
-                    turns++;
-                    break;
-                case 3:
-                    promotePawn(moveFrom, moveTo);
-                    turns++;
-                    break;
-                case 4:
-                    castleKingSide(moveFrom, moveTo);
-                    turns++;
-                    break;
-                case 5:
-                    castleQueenSide(moveFrom, moveTo);
-                    turns++;
-                    break;
-                default:
-                    break;
-            }
+                increasePawnsMovementCounterByOneBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIAlsoWantToGetSomeIdeasIWishIHadMoreExperience(board, moveTo);
+
+                switch (legalValue)
+                {
+                    case 1:
+                        move(moveFrom, moveTo);
+                        turns++;
+                        break;
+                    case 2:
+                        enPassant(moveFrom, moveTo);
+                        turns++;
+                        break;
+                    case 3:
+                        promotePawn(moveFrom, moveTo);
+                        turns++;
+                        break;
+                    case 4:
+                        castleKingSide(moveFrom, moveTo);
+                        turns++;
+                        break;
+                    case 5:
+                        castleQueenSide(moveFrom, moveTo);
+                        turns++;
+                        break;
+                    default:
+                        break;
+                }
 //            }
         }
-        increasePawnsMovementCounterByOneIfOnTheSpecificRowBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIDumbNoItIsTheOtherPeopleIAlsoWantToGetSomeIdeasIWishIKnewMoreOrHadRealWorldExperiencePeriodGodIWishIKnewWhatIWasDoingAtLeastItSortOfWorks(board, moveTo);
     }
 
     // only checks the 4th and 5th row assuming this is an 8 x 8 board
-    private void increasePawnsMovementCounterByOneIfOnTheSpecificRowBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIDumbNoItIsTheOtherPeopleIAlsoWantToGetSomeIdeasIWishIKnewMoreOrHadRealWorldExperiencePeriodGodIWishIKnewWhatIWasDoingAtLeastItSortOfWorks(Board board, Tile moveTo)
+    private void increasePawnsMovementCounterByOneBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIAlsoWantToGetSomeIdeasIWishIHadMoreExperience(Board board, Tile moveTo)
     {
-        for (int i = 0; i < board.getBoardSizeX(); i++)
+        if (movedPiece != null)
         {
-            if (board.getTile(i, board.getBoardSizeY() - 4).getPiece() != null)
+            if (movedPiece.getPiece().getId() == 'P')
             {
-                if (board.getTile(i, board.getBoardSizeY() - 4).getPiece().getId() == 'P')
+                if (movedPiece.getY() == 3 || movedPiece.getY() == board.getBoardSizeY() - 4)
                 {
-                    if (board.getTile(i, board.getBoardSizeY() - 4) != moveTo)
+                    if (movedPiece.getPiece().getMoves() == 1)
                     {
-                        if (board.getTile(i, board.getBoardSizeY() - 4).getPiece().getMoves() == 1)
-                        {
-                            board.getTile(i, board.getBoardSizeY() - 4).getPiece().increaseMoves();
-                            board.getTile(i, board.getBoardSizeY() - 4).getPiece().movesMinusOne = true;
-                        }
-                    }
-                }
-            }
-
-            if (board.getTile(i, 3).getPiece() != null)
-            {
-                if (board.getTile(i, 3).getPiece().getId() == 'P')
-                {
-                    if (board.getTile(i, 3) != moveTo)
-                    {
-                        if (board.getTile(i, 3).getPiece().getMoves() == 1)
-                        {
-                            board.getTile(i, 3).getPiece().increaseMoves();
-                            board.getTile(i, 3).getPiece().movesMinusOne = true;
-                        }
+                        movedPiece.getPiece().increaseMoves();
+                        movedPiece.getPiece().movesMinusOne = true;
                     }
                 }
             }
@@ -96,7 +92,7 @@ public class ChessGame
         board.getTile(moveTo.getX() + 1, moveTo.getY()).setPiece(rook);
         board.getTile(0, moveFrom.getY()).setPiece(null);
 
-        normalMove(moveFrom, moveTo);
+        move(moveFrom, moveTo);
     }
 
     private void castleKingSide(Tile moveFrom, Tile moveTo)
@@ -106,16 +102,19 @@ public class ChessGame
         board.getTile(moveTo.getX() - 1, moveTo.getY()).setPiece(rook);
         board.getTile(board.getBoardSizeX() - 1, moveFrom.getY()).setPiece(null);
 
-        normalMove(moveFrom, moveTo);
+        move(moveFrom, moveTo);
     }
 
     private void promotePawn(Tile moveFrom, Tile moveTo)
     {
         boolean needInput = true;
-        while(needInput)
+        while (needInput)
         {
+            System.out.println("Promote Pawn");
+            System.out.println("Q:Queen, R:Rook, B:Bishop, H:Horse.");
+            System.out.print("Piece: ");
             char pieceSelected = s.nextLine().charAt(0);
-            normalMove(moveFrom, moveTo);
+            move(moveFrom, moveTo);
 
             Piece pawn = moveTo.getPiece();
             switch (pieceSelected)
@@ -162,21 +161,24 @@ public class ChessGame
             captured.add(board.getTile(moveTo.getX(), moveTo.getY() + 1).getPiece());
             board.getTile(moveTo.getX(), moveTo.getY() + 1).setPiece(null);
         }
-        normalMove(moveFrom, moveTo);
+        move(moveFrom, moveTo);
 
         moveTo.getPiece().movesMinusOne = true;
         moveTo.getPiece().increaseMoves();
     }
 
-    private void normalMove(Tile moveFrom, Tile moveTo)
+    private void move(Tile moveFrom, Tile moveTo)
     {
         if (moveTo.getPiece() != null)
         {
             captured.add(moveTo.getPiece());
         }
+
         board.getTile(moveTo.getX(), moveTo.getY()).setPiece(moveFrom.getPiece());
         board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
 
         moveTo.getPiece().increaseMoves();
+
+        movedPiece = moveTo;
     }
 }

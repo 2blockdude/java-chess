@@ -1,3 +1,5 @@
+package Chess;
+
 import static java.lang.Math.sqrt;
 import static java.lang.Math.pow;
 
@@ -29,6 +31,11 @@ public class Horse extends Piece
         // note: used hypotenuse for some reason
         if (sqrt(pow(numSpacesMovingX, 2) + pow(numSpacesMovingY, 2)) != sqrt(5))
             return 0;
+
+        // check if king is in check and if move will bring it out of check
+        if (isKingInCheck(board))
+            if (isDestinationCheck(board, moveFrom, moveTo))
+                return 0;
 
         return 1;
     }

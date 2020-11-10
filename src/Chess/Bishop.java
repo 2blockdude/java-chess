@@ -1,3 +1,5 @@
+package Chess;
+
 import static java.lang.Math.abs;
 
 public class Bishop extends Piece
@@ -29,8 +31,13 @@ public class Bishop extends Piece
             return 0;
 
         // illegal if there is a piece in between the piece and the destination
-        if (isPieceBlockingV2(board, moveFrom, moveTo))
+        if (isPieceBlocking(board, moveFrom, moveTo))
             return 0;
+
+        // check if king is in check and if move will bring it out of check
+        if (isKingInCheck(board))
+            if (isDestinationCheck(board, moveFrom, moveTo))
+                return 0;
 
         return 1;
     }
@@ -51,40 +58,6 @@ public class Bishop extends Piece
 
             if (board.getTile(moveFrom.getX() + (i * movingX), moveFrom.getY() + (i * movingY)).getPiece() != null)
                 return true;
-        }
-
-        return false;
-    }
-
-    private boolean isPieceBlocking(Board board, Tile moveFrom, Tile moveTo)
-    {
-        int numSpacesMovingX = (moveTo.getX() - moveFrom.getX());
-        int numSpacesMovingY = (moveTo.getY() - moveFrom.getY());
-        int isPositiveX = numSpacesMovingX > 0 ? 1 : -1;
-        int isPositiveY = numSpacesMovingY > 0 ? 1 : -1;
-
-        if (numSpacesMovingX == numSpacesMovingY)
-        {
-            for (int i = isPositiveX; i != numSpacesMovingX + isPositiveX; i += isPositiveX)
-            {
-                if (i == numSpacesMovingX && moveTo.getPiece() != null && isWhite() != moveTo.getPiece().isWhite())
-                    return false;
-                if (board.getTile(moveFrom.getX() + i, moveFrom.getY() + i).getPiece() != null)
-                    return true;
-            }
-        }
-
-        if (numSpacesMovingX != numSpacesMovingY)
-        {
-            for (int i = 1; i <= abs(numSpacesMovingX); i++)
-            {
-                // legal if piece is the destination, is not null, and is not the same color
-                if (i == abs(numSpacesMovingX) && moveTo.getPiece() != null && isWhite() != moveTo.getPiece().isWhite())
-                    return false;
-
-                if (board.getTile(moveFrom.getX() + (i * isPositiveX), moveFrom.getY() + (i * isPositiveY)).getPiece() != null)
-                    return true;
-            }
         }
 
         return false;

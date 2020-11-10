@@ -1,3 +1,5 @@
+package Chess;
+
 public class Tile
 {
     private Piece piece;
