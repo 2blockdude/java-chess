@@ -30,7 +30,7 @@ public class GameShowMoves
                 }
                 else
                 {
-                    int legalValue = t.getPiece().isLegalMove(board, board.getTile(pawnx, pawny), board.getTile(x, y));
+                    int legalValue = t.getPiece().isMoveLegal(board, board.getTile(pawnx, pawny), board.getTile(x, y));
                     if (legalValue > 0)
                         if (board.getTile(x, y).getPiece() != null)
                             System.out.printf("|%c%c|", board.getTile(x, y).getPiece().isWhite() ? 'W' : 'B', board.getTile(x, y).getPiece().getId());

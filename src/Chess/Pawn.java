@@ -16,7 +16,7 @@ public class Pawn extends Piece
     }
 
     @Override
-    public int isLegalMove(Board board, Tile moveFrom, Tile moveTo)
+    public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo)
     {
         int numSpacesX = abs(moveFrom.getX() - moveTo.getX());
         int numSpacesY = abs(moveFrom.getY() - moveTo.getY());

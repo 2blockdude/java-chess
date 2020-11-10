@@ -35,14 +35,14 @@ public abstract class Piece
         movesTaken++;
     }
 
-    // isLegalMove notes
+    // isMoveLegal notes
     // 0: illegal move
     // 1: legal move
     // 2: en passant
     // 3: promotion
     // 4: castle king side
     // 5: castle queen side
-    public abstract int isLegalMove(Board board, Tile moveFrom, Tile moveTo);
+    public abstract int isMoveLegal(Board board, Tile moveFrom, Tile moveTo);
     public abstract char getId();
 
     // not sure if I should put this here
@@ -58,7 +58,7 @@ public abstract class Piece
                                 for (int y = 0; y < board.getBoardSizeY(); y++)
                                     if (board.getTile(x, y).getPiece() != null)
                                         if (board.getTile(x, y).getPiece().isWhite() != isWhite())
-                                            if (board.getTile(x, y).getPiece().isLegalMove(board, board.getTile(x, y), board.getTile(i, j)) > 0)
+                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j)) > 0)
                                                 return true;
         return false;
     }

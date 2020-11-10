@@ -53,6 +53,9 @@ public class Game
 
             while(true)
             {
+                System.out.println(c.isKingInCheck());
+                System.out.println(c.isKingInCheckmate());
+
                 System.out.print("Select Piece: ");
                 String pieceFrom = s.nextLine();
                 int x = pieceFrom.charAt(0) - 97;
@@ -62,6 +65,8 @@ public class Game
                 String pieceTo = s.nextLine();
                 int i = pieceTo.charAt(0) - 97;
                 int j = Integer.parseInt(String.valueOf(pieceTo.charAt(1))) - 1;
+
+
 
 
                 c.movePiece(board.getTile(x, y), board.getTile(i, j));

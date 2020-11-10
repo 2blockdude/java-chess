@@ -123,13 +123,14 @@ public class Board
         // King test
         // castle
         board[4][0].setPiece((new King(true, 900)));
-        board[5][2].setPiece(new Horse(false, 10));
+//        board[5][2].setPiece(new Horse(false, 10));
         board[4][7].setPiece(new Rook(false, 10));
+        board[0][1].setPiece(new Rook(true, 10));
 //        board[0][3].getPiece().increaseMoves();
-//        board[3][4].setPiece((new Rook(false, 20)));
+        board[4][1].setPiece((new Queen(false, 20)));
 //        board[4][5].setPiece((new Queen(true, 30)));
-        board[4][1].setPiece(new Pawn(true, 10));
-        board[2][1].setPiece(new Pawn(true, 10));
-        board[3][1].setPiece(new Pawn(true, 10));
+//        board[4][1].setPiece(new Pawn(true, 10));
+//        board[2][1].setPiece(new Pawn(true, 10));
+//        board[3][1].setPiece(new Pawn(true, 10));
     }
 }

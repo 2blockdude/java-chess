@@ -16,7 +16,7 @@ public class Queen extends Piece
     }
 
     @Override
-    public int isLegalMove(Board board, Tile moveFrom, Tile moveTo)
+    public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo)
     {
         int numSpacesMovingX = (moveTo.getX() - moveFrom.getX());
         int numSpacesMovingY = (moveTo.getY() - moveFrom.getY());
