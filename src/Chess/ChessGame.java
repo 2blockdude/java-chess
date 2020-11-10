@@ -21,9 +21,61 @@ public class ChessGame
         this.s = scanner;
     }
 
-    public void isLegalMove(Tile moveFrom, Tile moveTo)
+    public boolean isMoveLegal(Tile moveFrom, Tile moveTo)
     {
-        
+        int legalValue = moveFrom.getPiece().isMoveLegal(board, moveFrom, moveTo);
+
+        if (legalValue > 0)
+            return true;
+        return false;
+    }
+
+    // checks the king based on turn i.e. if it is black's turn it will check the black king and visa versa.
+    public boolean isKingInCheck()
+    {
+        // loops at tile looking for enemy piece
+        for (int i = 0; i < board.getBoardSizeX(); i++)
+            for (int j = 0; j < board.getBoardSizeY(); j++)
+                if (board.getTile(i, j).getPiece() != null)
+                    if (board.getTile(i, j).getPiece().getId() == 'K')
+                        if (board.getTile(i, j).getPiece().isWhite() == (turns % 2 == 0))
+                            for (int x = 0; x < board.getBoardSizeX(); x++)
+                                for (int y = 0; y < board.getBoardSizeY(); y++)
+                                    if (board.getTile(x, y).getPiece() != null)
+                                        if (board.getTile(x, y).getPiece().isWhite() != (turns % 2 == 0))
+                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j)) > 0)
+                                                return true;
+        return false;
+    }
+
+    public boolean isKingInCheckmate()
+    {
+        if (isKingInCheck())
+        {
+            for (int x = 0; x < board.getBoardSizeX(); x++)
+            {
+                for (int y = 0; y < board.getBoardSizeY(); y++)
+                {
+                    if (board.getTile(x, y).getPiece() != null)
+                    {
+                        if (board.getTile(x, y).getPiece().isWhite() == (turns % 2 == 0))
+                        {
+                            for (int i = 0; i < board.getBoardSizeX(); i++)
+                            {
+                                for (int j = 0; j < board.getBoardSizeY(); j++)
+                                {
+                                    if (isMoveLegal(board.getTile(x, y), board.getTile(i, j)))
+                                    {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void movePiece(Tile moveFrom, Tile moveTo)
@@ -33,7 +85,7 @@ public class ChessGame
         {
 //            if (moveFrom.getPiece().isWhite() == (turns % 2 == 0))
 //            {
-                int legalValue = moveFrom.getPiece().isLegalMove(board, moveFrom, moveTo);
+                int legalValue = moveFrom.getPiece().isMoveLegal(board, moveFrom, moveTo);
 
                 increasePawnsMovementCounterByOneBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIAlsoWantToGetSomeIdeasIWishIHadMoreExperience(board, moveTo);
 
