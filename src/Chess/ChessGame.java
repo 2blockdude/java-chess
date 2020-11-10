@@ -10,6 +10,7 @@ public class ChessGame
     private Tile movedPiece;
     private ArrayList<Piece> captured = new ArrayList<>();
     private int turns = 0;
+    private boolean needPromotion = false;
 
     public int getTurns()
     {
@@ -19,6 +20,11 @@ public class ChessGame
     public boolean isTurnWhite()
     {
         return turns % 2 == 0;
+    }
+
+    public boolean isNeedPromotion()
+    {
+        return needPromotion;
     }
 
     public int getBoardSizeX()
@@ -62,6 +68,9 @@ public class ChessGame
 
     public boolean isMoveLegal(Tile moveFrom, Tile moveTo)
     {
+        if (needPromotion)
+            return false;
+
         int legalValue = moveFrom.getPiece().isMoveLegal(board, moveFrom, moveTo);
 
         if (legalValue > 0)
@@ -88,38 +97,43 @@ public class ChessGame
     public void movePiece(Tile moveFrom, Tile moveTo)
     {
         // don't forget at the end of moving increase all pawns, who have moved once and is on the en passant row, moves by one
-        if (moveFrom.getPiece() != null)
+        if (!needPromotion)
         {
-            if (moveFrom.getPiece().isWhite() == (turns % 2 == 0))
+            if (moveFrom.getPiece() != null)
             {
-                int legalValue = moveFrom.getPiece().isMoveLegal(board, moveFrom, moveTo);
-
-                increasePawnsMovementCounterByOneBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIAlsoWantToGetSomeIdeasIWishIHadMoreExperience(board, moveTo);
-
-                switch (legalValue)
+                if (moveFrom.getPiece().isWhite() == (turns % 2 == 0))
                 {
-                    case 1:
-                        move(moveFrom, moveTo);
-                        turns++;
-                        break;
-                    case 2:
-                        enPassant(moveFrom, moveTo);
-                        turns++;
-                        break;
-                    case 3:
-                        promotePawn(moveFrom, moveTo);
-                        turns++;
-                        break;
-                    case 4:
-                        castleKingSide(moveFrom, moveTo);
-                        turns++;
-                        break;
-                    case 5:
-                        castleQueenSide(moveFrom, moveTo);
-                        turns++;
-                        break;
-                    default:
-                        break;
+                    int legalValue = moveFrom.getPiece().isMoveLegal(board, moveFrom, moveTo);
+
+                    if (legalValue > 0)
+                        increasePawnsMovementCounterByOneBTWThisIsAWorkAroundForEnPassantBecauseICouldNotThinkOfABetterWayToDoThisIGuessIAlsoWantToGetSomeIdeasIWishIHadMoreExperience(board, moveTo);
+
+                    switch (legalValue)
+                    {
+                        case 1:
+                            move(moveFrom, moveTo);
+                            turns++;
+                            break;
+                        case 2:
+                            enPassant(moveFrom, moveTo);
+                            turns++;
+                            break;
+                        case 3:
+                            move(moveFrom, moveTo);
+                            needPromotion = true;
+                            turns++;
+                            break;
+                        case 4:
+                            castleKingSide(moveFrom, moveTo);
+                            turns++;
+                            break;
+                        case 5:
+                            castleQueenSide(moveFrom, moveTo);
+                            turns++;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -196,49 +210,38 @@ public class ChessGame
         move(moveFrom, moveTo);
     }
 
-    private void promotePawn(Tile moveFrom, Tile moveTo)
+    public void promoteLastMovedPiece(char selectPiece)
     {
-        boolean needInput = true;
-        while (needInput)
-        {
-            System.out.println("Promote Pawn");
-            System.out.println("Q:Queen, R:Rook, B:Bishop, H:Horse.");
-            System.out.print("Piece: ");
-//            char pieceSelected = s.nextLine().charAt(0);
-            char pieceSelected = 'Q';
-            move(moveFrom, moveTo);
-
-            Piece pawn = moveTo.getPiece();
-            switch (pieceSelected)
+            Piece pawn = movedPiece.getPiece();
+            switch (selectPiece)
             {
                 case 'Q':
-                    moveTo.setPiece(new Queen(pawn.isWhite()));
-                    moveTo.getPiece().setMoves(pawn.getMoves());
-                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
-                    needInput = false;
+                    movedPiece.setPiece(new Queen(pawn.isWhite()));
+                    movedPiece.getPiece().setMoves(pawn.getMoves());
+                    movedPiece.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needPromotion = false;
                     break;
                 case 'R':
-                    moveTo.setPiece(new Rook(pawn.isWhite()));
-                    moveTo.getPiece().setMoves(pawn.getMoves());
-                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
-                    needInput = false;
+                    movedPiece.setPiece(new Rook(pawn.isWhite()));
+                    movedPiece.getPiece().setMoves(pawn.getMoves());
+                    movedPiece.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needPromotion = false;
                     break;
                 case 'B':
-                    moveTo.setPiece(new Bishop(pawn.isWhite()));
-                    moveTo.getPiece().setMoves(pawn.getMoves());
-                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
-                    needInput = false;
+                    movedPiece.setPiece(new Bishop(pawn.isWhite()));
+                    movedPiece.getPiece().setMoves(pawn.getMoves());
+                    movedPiece.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needPromotion = false;
                     break;
                 case 'H':
-                    moveTo.setPiece(new Horse(pawn.isWhite()));
-                    moveTo.getPiece().setMoves(pawn.getMoves());
-                    moveTo.getPiece().movesMinusOne = pawn.movesMinusOne;
-                    needInput = false;
+                    movedPiece.setPiece(new Horse(pawn.isWhite()));
+                    movedPiece.getPiece().setMoves(pawn.getMoves());
+                    movedPiece.getPiece().movesMinusOne = pawn.movesMinusOne;
+                    needPromotion = false;
                     break;
                 default:
                     break;
             }
-        }
     }
 
     private void enPassant(Tile moveFrom, Tile moveTo)

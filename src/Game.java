@@ -39,6 +39,10 @@ public class Game extends JPanel
 
                 System.out.printf("%d, %d\n", mouseX, mouseY);
                 movePiece();
+                if (chess.isNeedPromotion())
+                    chess.promoteLastMovedPiece('Q');
+                System.out.println(chess.isKingInCheck());
+                System.out.println(chess.isKingInCheckmate());
                 repaint();
             }
         });
@@ -72,6 +76,7 @@ public class Game extends JPanel
             for (int y = 0; y < chess.getBoardSizeY(); y++)
             {
                 g.drawRect(x * 100, y * 100, 100, 100);
+
                 if (chess.getTile(x, y).getPiece() != null)
                 {
                     if (chess.getTile(x, y).getPiece().isWhite())
@@ -79,10 +84,12 @@ public class Game extends JPanel
                         g.setColor(Color.gray);
                         g.fillOval((x * 100) + 25, (y * 100) + 25, 50, 50);
                         g.setColor(Color.black);
+                        g.drawString(String.valueOf(chess.getTile(x, y).getPiece().getId()), (x * 100) + 5, (y * 100) + 15);
                     }
                     else
                     {
                         g.fillOval((x * 100) + 25, (y * 100) + 25, 50, 50);
+                        g.drawString(String.valueOf(chess.getTile(x, y).getPiece().getId()), (x * 100) + 5, (y * 100) + 15);
                     }
                 }
             }

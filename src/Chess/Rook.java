@@ -52,6 +52,9 @@ public class Rook extends Piece
                 if (isDestinationCheck(board, moveFrom, moveTo))
                     return 0;
 
+        if (isDestinationCheck(board, moveFrom, moveTo))
+            return 0;
+
         return 1;
 
     }

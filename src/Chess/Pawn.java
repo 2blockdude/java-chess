@@ -1,5 +1,7 @@
 package Chess;
 
+import javax.swing.*;
+
 import static java.lang.Math.abs;
 
 public class Pawn extends Piece
@@ -45,6 +47,12 @@ public class Pawn extends Piece
         if ((isWhite() && !canMoveForward) || (!isWhite() && canMoveForward))
             return 0;
 
+        // illegal if not within one space or two in the y axis if not moved
+        if ((abs(numSpacesX) > 1 || abs(numSpacesY) > 2))
+        {
+            return 0;
+        }
+
         // can't move is piece if blocking
         if (isPieceBlocking(board, moveFrom, moveTo))
         {
@@ -57,6 +65,9 @@ public class Pawn extends Piece
                 if (isKingInCheck(board))
                     if (isDestinationCheck(board, moveFrom, moveTo))
                         return 0;
+
+            if (isDestinationCheck(board, moveFrom, moveTo))
+                return 0;
 
             // legal if nothing in the space
             if (moveTo.getPiece() == null)
@@ -74,7 +85,7 @@ public class Pawn extends Piece
                     if (getMoves() == 0)
                         return 1;
 
-                // legal move if the enemy pawn is two spaces from the home row, within bounds, there is a piece to the left side, the piece is a pawn, and the enemy pawn has moved once
+                // legal move if the enemy pawn is two spaces from the home row, within bounds, the destination has a piece behind it, the piece is a pawn, and the enemy pawn has moved once
                 if (((moveFrom.getY() == 3) && !isWhite()) || ((moveFrom.getY() == board.getBoardSizeY() - 4) && isWhite()))
                     if ((moveTo.getY() - 1) >= 0 && (moveTo.getY() - 1) < board.getBoardSizeY())
                         if (board.getTile(moveTo.getX(), moveTo.getY() - 1).getPiece() != null)
