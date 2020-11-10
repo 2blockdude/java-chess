@@ -26,15 +26,15 @@ public class ChessGame
         return board.getBoardSizeY();
     }
 
-    public void setScanner(Scanner scanner)
+    public Tile getTile(int x, int y)
     {
-        this.s = scanner;
+        return board.getTile(x, y);
     }
 
-    private Tile getTileFromCoordinates(String coordinates)
+    public Tile getTile(String chessCoordinates)
     {
-        int x = coordinates.charAt(0) - 97;
-        int y = Integer.parseInt(String.valueOf(coordinates.charAt(1))) - 1;
+        int x = chessCoordinates.charAt(0) - 97;
+        int y = Integer.parseInt(String.valueOf(chessCoordinates.charAt(1))) - 1;
 
         return board.getTile(x, y);
     }
@@ -49,8 +49,8 @@ public class ChessGame
 
     public boolean isMoveLegal(String piece, String destination)
     {
-        Tile moveFrom = getTileFromCoordinates(piece);
-        Tile moveTo = getTileFromCoordinates(destination);
+        Tile moveFrom = getTile(piece);
+        Tile moveTo = getTile(destination);
 
         return isMoveLegal(moveFrom, moveTo);
     }
@@ -64,38 +64,6 @@ public class ChessGame
         return false;
     }
 
-    // checks the king based on turn i.e. if it is black's turn it will check the black king and visa versa.
-    public boolean isKingInCheck()
-    {
-        // loops at tile looking for enemy piece and if it has a move that can take the king
-        for (int i = 0; i < board.getBoardSizeX(); i++)
-            for (int j = 0; j < board.getBoardSizeY(); j++)
-                if (board.getTile(i, j).getPiece() != null)
-                    if (board.getTile(i, j).getPiece().getId() == 'K')
-                        if (board.getTile(i, j).getPiece().isWhite() == (turns % 2 == 0))
-                            for (int x = 0; x < board.getBoardSizeX(); x++)
-                                for (int y = 0; y < board.getBoardSizeY(); y++)
-                                    if (board.getTile(x, y).getPiece() != null)
-                                        if (board.getTile(x, y).getPiece().isWhite() != (turns % 2 == 0))
-                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j)) > 0)
-                                                return true;
-        return false;
-    }
-
-    public boolean isKingInCheckmate()
-    {
-        // loops through add pieces that are on the same team and sees if there is a valid move. if it finds none then... you know the rest...
-        for (int x = 0; x < board.getBoardSizeX(); x++)
-            for (int y = 0; y < board.getBoardSizeY(); y++)
-                if (board.getTile(x, y).getPiece() != null)
-                    if (board.getTile(x, y).getPiece().isWhite() == (turns % 2 == 0))
-                        for (int i = 0; i < board.getBoardSizeX(); i++)
-                            for (int j = 0; j < board.getBoardSizeY(); j++)
-                                if (isMoveLegal(board.getTile(x, y), board.getTile(i, j)))
-                                    return false;
-        return true;
-    }
-
     public void movePiece(int pieceX, int pieceY, int destinationX, int destinationY)
     {
         Tile moveFrom = board.getTile(pieceX, pieceY);
@@ -106,8 +74,8 @@ public class ChessGame
 
     public void movePiece(String pieceToMove, String destination)
     {
-        Tile moveFrom = getTileFromCoordinates(pieceToMove);
-        Tile moveTo = getTileFromCoordinates(destination);
+        Tile moveFrom = getTile(pieceToMove);
+        Tile moveTo = getTile(destination);
 
         movePiece(moveFrom, moveTo);
     }
@@ -150,6 +118,38 @@ public class ChessGame
                 }
             }
         }
+    }
+
+    // checks the king based on turn i.e. if it is black's turn it will check the black king and visa versa.
+    public boolean isKingInCheck()
+    {
+        // loops at tile looking for enemy piece and if it has a move that can take the king
+        for (int i = 0; i < board.getBoardSizeX(); i++)
+            for (int j = 0; j < board.getBoardSizeY(); j++)
+                if (board.getTile(i, j).getPiece() != null)
+                    if (board.getTile(i, j).getPiece().getId() == 'K')
+                        if (board.getTile(i, j).getPiece().isWhite() == (turns % 2 == 0))
+                            for (int x = 0; x < board.getBoardSizeX(); x++)
+                                for (int y = 0; y < board.getBoardSizeY(); y++)
+                                    if (board.getTile(x, y).getPiece() != null)
+                                        if (board.getTile(x, y).getPiece().isWhite() != (turns % 2 == 0))
+                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j)) > 0)
+                                                return true;
+        return false;
+    }
+
+    public boolean isKingInCheckmate()
+    {
+        // loops through add pieces that are on the same team and sees if there is a valid move. if it finds none then... you know the rest...
+        for (int x = 0; x < board.getBoardSizeX(); x++)
+            for (int y = 0; y < board.getBoardSizeY(); y++)
+                if (board.getTile(x, y).getPiece() != null)
+                    if (board.getTile(x, y).getPiece().isWhite() == (turns % 2 == 0))
+                        for (int i = 0; i < board.getBoardSizeX(); i++)
+                            for (int j = 0; j < board.getBoardSizeY(); j++)
+                                if (isMoveLegal(board.getTile(x, y), board.getTile(i, j)))
+                                    return false;
+        return true;
     }
 
     // only checks the 4th and 5th row assuming this is an 8 x 8 board

@@ -18,7 +18,6 @@ public class Game
     private static void printBoard(Board board)
     {
         ChessGame c = new ChessGame();
-        c.setScanner(s);
         c.board = board;
         while(true)
         {

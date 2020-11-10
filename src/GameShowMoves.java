@@ -6,7 +6,7 @@ public class GameShowMoves
     private static Board board = new Board(8, 8);
     public static void main(String[] args)
     {
-        printBoard(4, 7);
+        printBoard(0, 1);
     }
 
     private static void printBoard(int checkx, int checky)

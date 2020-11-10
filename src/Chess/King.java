@@ -18,6 +18,12 @@ public class King extends Piece
     @Override
     public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo)
     {
+        return isMoveLegal(board, moveFrom, moveTo, true);
+    }
+
+    @Override
+    public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo, boolean checkKing)
+    {
         int numSpacesMovingX = (moveTo.getX() - moveFrom.getX());
         int numSpacesMovingY = (moveTo.getY() - moveFrom.getY());
         boolean movingPositiveX = (numSpacesMovingX) > 0;

@@ -42,6 +42,7 @@ public abstract class Piece
     // 3: promotion
     // 4: castle king side
     // 5: castle queen side
+    public abstract int isMoveLegal(Board board, Tile moveFrom, Tile moveTo, boolean checkKing);
     public abstract int isMoveLegal(Board board, Tile moveFrom, Tile moveTo);
     public abstract char getId();
 
@@ -58,7 +59,7 @@ public abstract class Piece
                                 for (int y = 0; y < board.getBoardSizeY(); y++)
                                     if (board.getTile(x, y).getPiece() != null)
                                         if (board.getTile(x, y).getPiece().isWhite() != isWhite())
-                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j)) > 0)
+                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j), false) > 0)
                                                 return true;
         return false;
     }

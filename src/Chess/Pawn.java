@@ -18,6 +18,12 @@ public class Pawn extends Piece
     @Override
     public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo)
     {
+        return isMoveLegal(board, moveFrom, moveTo, true);
+    }
+
+    @Override
+    public int isMoveLegal(Board board, Tile moveFrom, Tile moveTo, boolean checkKing)
+    {
         int numSpacesX = abs(moveFrom.getX() - moveTo.getX());
         int numSpacesY = abs(moveFrom.getY() - moveTo.getY());
         boolean canMoveForward = (moveTo.getY() - moveFrom.getY()) > 0;
@@ -41,9 +47,10 @@ public class Pawn extends Piece
         else
         {
             // check if king is in check and if move will bring it out of check
-            if (isKingInCheck(board))
-                if (isDestinationCheck(board, moveFrom, moveTo))
-                    return 0;
+            if (checkKing)
+                if (isKingInCheck(board))
+                    if (isDestinationCheck(board, moveFrom, moveTo))
+                        return 0;
 
             // legal if nothing in the space
             if (moveTo.getPiece() == null)
