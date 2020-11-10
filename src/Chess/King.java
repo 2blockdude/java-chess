@@ -54,6 +54,8 @@ public class King extends Piece
                     return 0;
                 }
             }
+
+
         }
         else
         {

@@ -67,8 +67,30 @@ public abstract class Piece
         // moves king to destination to see if any enemy piece can move to the destination
         Piece enemyPiece = board.getTile(moveTo.getX(), moveTo.getY()).getPiece();
         Piece originalPiece = board.getTile(moveFrom.getX(), moveFrom.getY()).getPiece();
-        board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
-        board.getTile(moveTo.getX(), moveTo.getY()).setPiece(originalPiece);
+        Piece placeHolder;
+
+        // is not in check if it is about to capture a king
+        if (moveTo.getPiece() != null)
+        {
+            if (moveTo.getPiece().getId() == 'K')
+            {
+                return false;
+            }
+        }
+
+        // just created new place holder objects because I am lazy :P... sorry.
+        if (originalPiece.getId() == 'K')
+        {
+            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
+            placeHolder = new PlaceHolderKing(originalPiece.isWhite());
+            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(placeHolder);
+        }
+        else
+        {
+            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
+            placeHolder = new PlaceHolderPiece(originalPiece.isWhite());
+            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(placeHolder);
+        }
 
         if (isKingInCheck(board))
         {
@@ -76,10 +98,12 @@ public abstract class Piece
             board.getTile(moveTo.getX(), moveTo.getY()).setPiece(enemyPiece);
             return true;
         }
-
-        board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(originalPiece);
-        board.getTile(moveTo.getX(), moveTo.getY()).setPiece(enemyPiece);
-        return false;
+        else
+        {
+            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(originalPiece);
+            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(enemyPiece);
+            return false;
+        }
     }
 
     // not sure if I should put this method here but every piece uses this method except for the horse

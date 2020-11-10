@@ -63,22 +63,22 @@ public class Board
         board[6][0].setPiece(new Horse(true));
         board[7][0].setPiece(new Rook(true));
         // black
-        board[0][6].setPiece(new Pawn(false));
-        board[1][6].setPiece(new Pawn(false));
-        board[2][6].setPiece(new Pawn(false));
-        board[3][6].setPiece(new Pawn(false));
-        board[4][6].setPiece(new Pawn(false));
-        board[5][6].setPiece(new Pawn(false));
-        board[6][6].setPiece(new Pawn(false));
-        board[7][6].setPiece(new Pawn(false));
-        board[0][7].setPiece(new Rook(false));
-        board[1][7].setPiece(new Horse(false));
-        board[2][7].setPiece(new Bishop(false));
-        board[3][7].setPiece(new Queen(false));
+//        board[0][6].setPiece(new Pawn(false));
+//        board[1][6].setPiece(new Pawn(false));
+//        board[2][6].setPiece(new Pawn(false));
+//        board[3][6].setPiece(new Pawn(false));
+//        board[4][6].setPiece(new Pawn(false));
+//        board[5][6].setPiece(new Pawn(false));
+//        board[6][6].setPiece(new Pawn(false));
+//        board[7][6].setPiece(new Pawn(false));
+//        board[0][7].setPiece(new Rook(false));
+//        board[1][7].setPiece(new Horse(false));
+//        board[2][7].setPiece(new Bishop(false));
+//        board[3][7].setPiece(new Queen(false));
         board[4][7].setPiece(new King(false));
-        board[5][7].setPiece(new Bishop(false));
-        board[6][7].setPiece(new Horse(false));
-        board[7][7].setPiece(new Rook(false));
+//        board[5][7].setPiece(new Bishop(false));
+//        board[6][7].setPiece(new Horse(false));
+//        board[7][7].setPiece(new Rook(false));
 
 
         // Pawn test

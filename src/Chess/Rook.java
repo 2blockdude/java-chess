@@ -41,8 +41,8 @@ public class Rook extends Piece
             return 0;
 
         // check if king is in check and if move will bring it out of check
-        if (isKingInCheck(board))
-            return 0;
+//        if (isKingInCheck(board))
+//            return 0;
         if (isDestinationCheck(board, moveFrom, moveTo))
             return 0;
 
