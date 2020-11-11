@@ -64,11 +64,7 @@ public abstract class Piece
 
     protected boolean isDestinationCheck(Board board, Tile moveFrom, Tile moveTo)
     {
-        // moves king to destination to see if any enemy piece can move to the destination
-        Piece enemyPiece = board.getTile(moveTo.getX(), moveTo.getY()).getPiece();
-        Piece originalPiece = board.getTile(moveFrom.getX(), moveFrom.getY()).getPiece();
-
-        // if it is about to capture a king then just return that it will not be in check
+        // if it is about to capture a king then just return false
         if (moveTo.getPiece() != null)
         {
             if (moveTo.getPiece().getId() == 'K')
@@ -77,22 +73,11 @@ public abstract class Piece
             }
         }
 
-        // just created new place holder objects because I am lazy :P... sorry.
-//        if (originalPiece.getId() == 'K')
-//        {
-//            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
-//            placeHolder = new PlaceHolderKing(originalPiece.isWhite());
-//            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(placeHolder);
-//        }
-//        else
-//        {
-//            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
-//            placeHolder = new PlaceHolderPiece(originalPiece.isWhite());
-//            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(placeHolder);
-//        }
-
-            board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
-            board.getTile(moveTo.getX(), moveTo.getY()).setPiece(originalPiece);
+        // moves king to destination to see if any enemy piece can move to the destination
+        Piece enemyPiece = board.getTile(moveTo.getX(), moveTo.getY()).getPiece();
+        Piece originalPiece = board.getTile(moveFrom.getX(), moveFrom.getY()).getPiece();
+        board.getTile(moveFrom.getX(), moveFrom.getY()).setPiece(null);
+        board.getTile(moveTo.getX(), moveTo.getY()).setPiece(originalPiece);
 
         if (isKingInCheck(board))
         {
