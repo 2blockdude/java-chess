@@ -56,16 +56,8 @@ public class Pawn extends Piece
         {
             // check if king is in check and if move will bring it out of check
             // to be honest I don't know how this does not cause a stack overflow error
-//            if (isKingInCheck(board))
-//                return 0;
             if (isDestinationCheck(board, moveFrom, moveTo))
                 return 0;
-
-                // old method that did not word properly
-//            if (checkKing)
-//                if (isKingInCheck(board))
-//                    if (isDestinationCheck(board, moveFrom, moveTo))
-//                        return 0;
 
             // legal if nothing in the space
             if (moveTo.getPiece() == null)

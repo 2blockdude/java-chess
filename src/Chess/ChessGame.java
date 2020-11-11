@@ -1,20 +1,23 @@
 package Chess;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ChessGame extends PieceMovement
 {
     private Board board = new Board(8, 8);
-    private static Scanner s = new Scanner(System.in);
     private Tile movedPiece = null;
-    private ArrayList<Piece> captured = new ArrayList<>();
+    private final ArrayList<Piece> captured = new ArrayList<>();
     private int turns = 0;
     private boolean needPromotion = false;
 
     public ChessGame()
     {
         setBoard(board);
+    }
+
+    public ArrayList<Piece> getCaptured()
+    {
+        return captured;
     }
 
     public int getTurns()
@@ -78,9 +81,7 @@ public class ChessGame extends PieceMovement
 
         int legalValue = moveFrom.getPiece().isMoveLegal(board, moveFrom, moveTo);
 
-        if (legalValue > 0)
-            return true;
-        return false;
+        return legalValue > 0;
     }
 
     public void movePiece(int pieceX, int pieceY, int destinationX, int destinationY)

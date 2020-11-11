@@ -1,16 +1,12 @@
-import Chess.Tile;
 import Chess.ChessGame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Line2D;
-import java.util.Scanner;
 
 public class Game extends JPanel
 {
-    private ChessGame chess = new ChessGame();
-    private Scanner s = new Scanner(System.in);
+    private final ChessGame chess = new ChessGame();
     private int previousMouseX;
     private int previousMouseY;
     private int mouseX;
@@ -90,17 +86,12 @@ public class Game extends JPanel
             {
                 boolean isTan = (x % 2 == 0) ? y % 2 == 0 : y % 2 == 1;
                 if (isTan)
-                {
                     g.setColor(t1);
-                    g.fillRect(x * 100, y * 100, 100, 100);
-                    g.setColor(Color.black);
-                }
                 else
-                {
                     g.setColor(t2);
-                    g.fillRect(x * 100, y * 100, 100, 100);
-                    g.setColor(Color.black);
-                }
+
+                g.fillRect(x * 100, y * 100, 100, 100);
+                g.setColor(Color.black);
                 g.drawRect(x * 100, y * 100, 100, 100);
             }
         }
@@ -124,50 +115,26 @@ public class Game extends JPanel
                 {
                     if (chess.getTile(x, y).getPiece().isWhite())
                     {
-                        switch(chess.getTile(x, y).getPiece().getId())
+                        switch (chess.getTile(x, y).getPiece().getId())
                         {
-                            case 'K':
-                                g.drawString("♔", drawX, drawY);
-                                break;
-                            case 'Q':
-                                g.drawString("♕", drawX, drawY);
-                                break;
-                            case 'R':
-                                g.drawString("♖", drawX, drawY);
-                                break;
-                            case 'B':
-                                g.drawString("♗", drawX, drawY);
-                                break;
-                            case 'H':
-                                g.drawString("♘", drawX, drawY);
-                                break;
-                            case 'P':
-                                g.drawString("♙", drawX, drawY);
-                                break;
+                            case 'K' -> g.drawString("♔", drawX, drawY);
+                            case 'Q' -> g.drawString("♕", drawX, drawY);
+                            case 'R' -> g.drawString("♖", drawX, drawY);
+                            case 'B' -> g.drawString("♗", drawX, drawY);
+                            case 'H' -> g.drawString("♘", drawX, drawY);
+                            case 'P' -> g.drawString("♙", drawX, drawY);
                         }
                     }
                     else
                     {
-                        switch(chess.getTile(x, y).getPiece().getId())
+                        switch (chess.getTile(x, y).getPiece().getId())
                         {
-                            case 'K':
-                                g.drawString("♚", drawX, drawY);
-                                break;
-                            case 'Q':
-                                g.drawString("♛", drawX, drawY);
-                                break;
-                            case 'R':
-                                g.drawString("♜", drawX, drawY);
-                                break;
-                            case 'B':
-                                g.drawString("♝", drawX, drawY);
-                                break;
-                            case 'H':
-                                g.drawString("♞", drawX, drawY);
-                                break;
-                            case 'P':
-                                g.drawString("♟", drawX, drawY);
-                                break;
+                            case 'K' -> g.drawString("♚", drawX, drawY);
+                            case 'Q' -> g.drawString("♛", drawX, drawY);
+                            case 'R' -> g.drawString("♜", drawX, drawY);
+                            case 'B' -> g.drawString("♝", drawX, drawY);
+                            case 'H' -> g.drawString("♞", drawX, drawY);
+                            case 'P' -> g.drawString("♟", drawX, drawY);
                         }
                     }
                 }
@@ -182,7 +149,7 @@ public class Game extends JPanel
             if (chess.getTile(mouseX, mouseY).getPiece().isWhite() == chess.isTurnWhite())
             {
                 g.setColor(Color.yellow);
-                g.drawRect((mouseX * 100), (mouseY * 100), 100, 100);
+                g.drawRect((mouseX * 100) + 3, (mouseY * 100) + 3, 94, 94);
                 g.setColor(Color.black);
             }
         }
@@ -201,7 +168,7 @@ public class Game extends JPanel
                         if (chess.isMoveLegal(mouseX, mouseY, x, y))
                         {
                             g.setColor(Color.red);
-                            g.drawOval((x * 100) + 25, (y * 100) + 25, 50, 50);
+                            g.drawRect((x * 100) + 3, (y * 100) + 3, 94, 94);
                             g.setColor(Color.black);
                         }
                     }
