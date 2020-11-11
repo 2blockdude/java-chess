@@ -5,6 +5,7 @@ import static java.lang.Math.abs;
 public abstract class Piece
 {
     private boolean white;
+    // work around boolean for pawns and en passant
     protected boolean movesMinusOne = false;
     private int movesTaken = 0;
 
