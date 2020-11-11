@@ -213,6 +213,7 @@ public class Game extends JPanel
     public static void main(String[] args)
     {
         JFrame jf = new JFrame();
+        // 801 to show entire boarder
         jf.setSize(801, 801);
         jf.setResizable(false);
         jf.setTitle("Chess");
