@@ -74,8 +74,9 @@ public class Game extends JPanel
 
         // draws chess game
         drawBoard(g2d);
+        drawPieces(g2d);
         highlightSelectedPiece(g2d);
-        fillValidMoves(g2d);
+        highlightValidMoves(g2d);
     }
 
     private void drawBoard(Graphics2D g)
@@ -87,7 +88,6 @@ public class Game extends JPanel
         {
             for (int y = 0; y < chess.getBoardSizeY(); y++)
             {
-
                 boolean isTan = (x % 2 == 0) ? y % 2 == 0 : y % 2 == 1;
                 if (isTan)
                 {
@@ -104,28 +104,71 @@ public class Game extends JPanel
                 g.drawRect(x * 100, y * 100, 100, 100);
             }
         }
+    }
+
+    private void drawPieces(Graphics2D g)
+    {
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
+        int drawX;
+        int drawY;
 
         for (int x = 0; x < chess.getBoardSizeX(); x++)
         {
             for (int y = 0; y < chess.getBoardSizeY(); y++)
             {
-
+                // just eyeballed position
+                drawX = (x * 100) + 10;
+                drawY = (y * 100) + 80;
 
                 if (chess.getTile(x, y).getPiece() != null)
                 {
                     if (chess.getTile(x, y).getPiece().isWhite())
                     {
-                        g.setColor(Color.white);
-                        g.fillOval((x * 100) + 25, (y * 100) + 25, 50, 50);
-                        g.setColor(Color.black);
-                        g.drawOval((x * 100) + 25, (y * 100) + 25, 50, 50);
-                        g.setColor(Color.black);
-                        g.drawString(String.valueOf(chess.getTile(x, y).getPiece().getId()), (x * 100) + 5, (y * 100) + 15);
+                        switch(chess.getTile(x, y).getPiece().getId())
+                        {
+                            case 'K':
+                                g.drawString("♔", drawX, drawY);
+                                break;
+                            case 'Q':
+                                g.drawString("♕", drawX, drawY);
+                                break;
+                            case 'R':
+                                g.drawString("♖", drawX, drawY);
+                                break;
+                            case 'B':
+                                g.drawString("♗", drawX, drawY);
+                                break;
+                            case 'H':
+                                g.drawString("♘", drawX, drawY);
+                                break;
+                            case 'P':
+                                g.drawString("♙", drawX, drawY);
+                                break;
+                        }
                     }
                     else
                     {
-                        g.fillOval((x * 100) + 25, (y * 100) + 25, 50, 50);
-                        g.drawString(String.valueOf(chess.getTile(x, y).getPiece().getId()), (x * 100) + 5, (y * 100) + 15);
+                        switch(chess.getTile(x, y).getPiece().getId())
+                        {
+                            case 'K':
+                                g.drawString("♚", drawX, drawY);
+                                break;
+                            case 'Q':
+                                g.drawString("♛", drawX, drawY);
+                                break;
+                            case 'R':
+                                g.drawString("♜", drawX, drawY);
+                                break;
+                            case 'B':
+                                g.drawString("♝", drawX, drawY);
+                                break;
+                            case 'H':
+                                g.drawString("♞", drawX, drawY);
+                                break;
+                            case 'P':
+                                g.drawString("♟", drawX, drawY);
+                                break;
+                        }
                     }
                 }
             }
@@ -139,13 +182,13 @@ public class Game extends JPanel
             if (chess.getTile(mouseX, mouseY).getPiece().isWhite() == chess.isTurnWhite())
             {
                 g.setColor(Color.yellow);
-                g.drawOval((mouseX * 100) + 25, (mouseY * 100) + 25, 50, 50);
+                g.drawRect((mouseX * 100), (mouseY * 100), 100, 100);
                 g.setColor(Color.black);
             }
         }
     }
 
-    private void fillValidMoves(Graphics2D g)
+    private void highlightValidMoves(Graphics2D g)
     {
         if (chess.getTile(mouseX, mouseY).getPiece() != null)
         {
