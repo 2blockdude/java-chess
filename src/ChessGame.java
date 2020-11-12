@@ -1,4 +1,6 @@
-package Chess;
+import Chess.GameBoard;
+import Chess.Piece;
+import Chess.Tile;
 
 import java.util.ArrayList;
 
