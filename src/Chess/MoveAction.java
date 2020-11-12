@@ -4,6 +4,11 @@ public class MoveAction
 {
     Board board;
 
+    public MoveAction(Board board)
+    {
+        this.board = board;
+    }
+
     void move(Tile moveFrom, Tile moveTo)
     {
         board.getTile(moveTo.getX(), moveTo.getY()).setPiece(moveFrom.getPiece());

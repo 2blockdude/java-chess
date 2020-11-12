@@ -1,14 +1,16 @@
 package Chess;
 
-public class GameBoard extends MoveAction
+public class GameBoard
 {
-    //private Board board = new Board(8, 8);
+    private Board board;
+    private MoveAction ma;
     private Tile movedPiece = null;
     private boolean needPromotion = false;
 
     public GameBoard()
     {
         this.board = new Board(8, 8);
+        this.ma = new MoveAction(board);
     }
 
     public void setBoard(Board board)
@@ -52,16 +54,16 @@ public class GameBoard extends MoveAction
     {
         // first loops through the board to find the king
         // then loops through board looking for enemy piece and if they have a move that can take the king
-        for (int i = 0; i < board.getBoardSizeX(); i++)
-            for (int j = 0; j < board.getBoardSizeY(); j++)
-                if (board.getTile(i, j).getPiece() != null)
-                    if (board.getTile(i, j).getPiece().getId() == 'K')
-                        if (board.getTile(i, j).getPiece().isWhite() == whiteSide)
-                            for (int x = 0; x < board.getBoardSizeX(); x++)
-                                for (int y = 0; y < board.getBoardSizeY(); y++)
-                                    if (board.getTile(x, y).getPiece() != null)
-                                        if (board.getTile(x, y).getPiece().isWhite() != whiteSide)
-                                            if (board.getTile(x, y).getPiece().isMoveLegal(board, board.getTile(x, y), board.getTile(i, j)) > 0)
+        for (int i = 0; i < getBoardSizeX(); i++)
+            for (int j = 0; j < getBoardSizeY(); j++)
+                if (getTile(i, j).getPiece() != null)
+                    if (getTile(i, j).getPiece().getId() == 'K')
+                        if (getTile(i, j).getPiece().isWhite() == whiteSide)
+                            for (int x = 0; x < getBoardSizeX(); x++)
+                                for (int y = 0; y < getBoardSizeY(); y++)
+                                    if (getTile(x, y).getPiece() != null)
+                                        if (getTile(x, y).getPiece().isWhite() != whiteSide)
+                                            if (isMoveLegal(getTile(x, y), getTile(i, j)))
                                                 return true;
         return false;
     }
@@ -138,20 +140,20 @@ public class GameBoard extends MoveAction
                 switch (legalValue)
                 {
                     case 1:
-                        move(moveFrom, moveTo);
+                        ma.move(moveFrom, moveTo);
                         break;
                     case 2:
-                        enPassant(moveFrom, moveTo);
+                        ma.enPassant(moveFrom, moveTo);
                         break;
                     case 3:
-                        move(moveFrom, moveTo);
+                        ma.move(moveFrom, moveTo);
                         needPromotion = true;
                         break;
                     case 4:
-                        castleKingSide(moveFrom, moveTo);
+                        ma.castleKingSide(moveFrom, moveTo);
                         break;
                     case 5:
-                        castleQueenSide(moveFrom, moveTo);
+                        ma.castleQueenSide(moveFrom, moveTo);
                         break;
                     default:
                         break;
