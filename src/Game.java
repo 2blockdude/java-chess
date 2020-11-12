@@ -35,8 +35,8 @@ public class Game extends JPanel
 
                 System.out.printf("%d, %d\n", mouseX, mouseY);
                 movePiece();
-                if (chess.isNeedPromotion())
-                    chess.promoteLastMovedPiece('Q');
+                if (chess.needPromotion())
+                    chess.promotePawn('Q');
                 System.out.println(chess.isKingInCheck());
                 System.out.println(chess.isKingInCheckmate());
 
