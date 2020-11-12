@@ -1,5 +1,3 @@
-import Chess.ChessGame;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -115,15 +113,26 @@ public class Game extends JPanel
                 {
                     if (chess.getTile(x, y).getPiece().isWhite())
                     {
+                        g.setColor(new Color(222, 222, 222));
                         switch (chess.getTile(x, y).getPiece().getId())
                         {
-                            case 'K' -> g.drawString("♔", drawX, drawY);
-                            case 'Q' -> g.drawString("♕", drawX, drawY);
-                            case 'R' -> g.drawString("♖", drawX, drawY);
-                            case 'B' -> g.drawString("♗", drawX, drawY);
-                            case 'H' -> g.drawString("♘", drawX, drawY);
-                            case 'P' -> g.drawString("♙", drawX, drawY);
+                            case 'K' -> g.drawString("♚", drawX, drawY);
+                            case 'Q' -> g.drawString("♛", drawX, drawY);
+                            case 'R' -> g.drawString("♜", drawX, drawY);
+                            case 'B' -> g.drawString("♝", drawX, drawY);
+                            case 'H' -> g.drawString("♞", drawX, drawY);
+                            case 'P' -> g.drawString("♟", drawX, drawY);
                         }
+                        g.setColor(Color.black);
+//                        switch (chess.getTile(x, y).getPiece().getId())
+//                        {
+//                            case 'K' -> g.drawString("♔", drawX, drawY);
+//                            case 'Q' -> g.drawString("♕", drawX, drawY);
+//                            case 'R' -> g.drawString("♖", drawX, drawY);
+//                            case 'B' -> g.drawString("♗", drawX, drawY);
+//                            case 'H' -> g.drawString("♘", drawX, drawY);
+//                            case 'P' -> g.drawString("♙", drawX, drawY);
+//                        }
                     }
                     else
                     {
